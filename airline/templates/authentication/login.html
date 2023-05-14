@@ -1,0 +1,77 @@
+{% extends '../base.html' %}
+
+{% block title %}
+Log In
+{% endblock %}
+
+{% block style %}
+
+<style>
+    body {
+        background-color: ghostwhite;
+    }
+
+    .max-container {
+        margin-top: 3rem;
+        max-width: 80%;
+        height: 800px;
+    }
+
+
+
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="container bg-white max-container shadow pe-0">
+        <div class="row g-0 h-100  "> <!-- gutter-0 removing spaces between columns -->
+            
+            <div class="col-lg-5 p-5 d-flex align-items-center justify-content-center">
+
+                <div>
+                    <h2 class="text-center m-3">Login Here!</h2>
+                    <p class="lead text-center">Welcome back! Please enter your details</p>
+
+                    <form class="" action="" method="post">
+                        {% csrf_token %}
+
+                        <div class="form-floating mb-2">
+                            {{form.username}}
+                            <label for="username" class="form-label">Username:</label>
+                        </div>
+
+                        <div class="form-floating mb-2">
+                            {{form.password}}
+                            <label for="password" class="form-label">Password:</label>
+                        </div>
+
+                        <div class="float-end">
+                            <a class="link-opacity-50 text-black" href="">forgot password</a>
+                        </div>
+
+                        <div class="d-grid gap-2 col-12 mx-auto mt-5 mb-3">
+                            <input type="submit" class="btn btn-dark" value="Login">
+                        </div>
+
+                        <p class="lead text-center" style="font-size: small;">Don't have an account yet? <a class="link-dark" href="">Sign up here</a></p>
+                        
+                        {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {{ form.non_field_errors }}
+                        </div>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-7 d-lg-block d-none" style="
+                background-image: url('https://cdn.dribbble.com/userupload/4504829/file/original-fd71897f2037d494fdd8f6a2de263d4e.jpg?compress=1&resize=1024x768&vertical=center');
+                background-size: cover;
+                background-position: center;">
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

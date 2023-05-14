@@ -1,0 +1,99 @@
+{% extends '../base.html' %}
+
+{% block title %}
+Sign Up
+{% endblock %}
+
+{% block style %}
+
+<style>
+    body {
+        background-color: ghostwhite;
+    }
+
+    .higher-div {
+        box-shadow: 0 2px 6px rgba(0,0,0,.5);
+    }
+
+    .max-container {
+        margin-top: 4rem;
+        max-width: 80%;
+        height: 800px;
+    }
+</style>
+
+{% endblock %}
+
+{% block content %}
+<section class="form">
+    <div class="container bg-white max-container  shadow pe-0">
+        <div class="row g-0 h-100  "> <!-- gutter-0 removing spaces between columns -->
+            <div class="col-lg-5 d-flex  align-items-center justify-content-center">
+                <div>
+                    <h2 class="text-center">Sign Up Here!</h2>
+                    <p class="lead text-center">Questions?Do not hesitate to contact us</p>
+
+                    <form class="" action="" method="post">
+                        {% csrf_token %}
+
+                        <div class="form-floating mb-2">
+                            {{form.username}}
+                            <label for="username" class="form-label">Username:</label>
+                        </div>
+
+                        <div class="form-floating mb-2">
+                            {{form.email}}
+                            <label for="email" class="form-label">Email:</label>
+                        </div>
+                        <div class="form-floating mb-2">
+                            {{form.password1}}
+                            <label for="password1" class="form-label">Password:</label>
+                        </div>
+                        <div class="form-floating mb-2">
+                            {{form.password2}}
+                            <label for="password2" class="form-label">Repeat Password:</label>
+                        </div>
+
+                        <div class="form-floating mb-2">
+                            {{form.first_name}}
+                            <label for="firstname" class="form-label">First Name</label>
+                        </div>
+
+                        <div class="form-floating mb-2">
+                            {{form.last_name}}
+                            <label for="lastname" class="form-label">Last Name</label>
+                        </div>
+
+                        <div class="mb-2">
+                            <label for="birthdate" class="form-label ms-3">birthdate</label>
+                            {{form.birthdate}}
+                        </div>
+
+                        <div class="d-grid gap-2 col-12 mx-auto mt-5 mb-3">
+
+                            <input type="submit" class="btn btn-outline-dark" value="Signup">
+                        </div>
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+                    </form>
+                </div>
+
+            </div>
+            <div class="col-lg-7 d-lg-block d-none" style="
+                background-image: url('https://media.vanityfair.com/photos/563d20b0ffe4c2a35a2a9145/4:3/w_1280,h_960,c_limit/t-a-wing-and-a-prayer-us-airlines.jpg');
+                background-size: cover;
+                background-position: center;">
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+</div>
+
+
+{% endblock %}
