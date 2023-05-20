@@ -7,7 +7,7 @@ from .forms import AuthenticateUserForm
 
 # Create your views here.
 def home_view(request):
-    return render(request,'home.html')
+    return render(request,'home.html',{'nav':"home"})
 
 def signup_view(request):
     
@@ -24,6 +24,12 @@ def signup_view(request):
     return render(request,'authentication/signup.html',{
         'form' : form
     })
+
+def flight_view(request):
+    return render(request,'flight.html',{'nav': "flight" })
+
+def hotel_view(request):
+    return render(request,'hotel.html',{'nav':"hotel"})
 
 #Login View is built in
 
