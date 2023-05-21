@@ -69,6 +69,7 @@ class Flight(models.Model):
         db_table = 'Flight'
     departure_time = models.DateTimeField()
     arrival_time = models.DateTimeField()
+    price = models.DecimalField(max_digits=6,decimal_places=2)
     is_Refundable = models.BooleanField()
     image = models.URLField()
     airport_from = models.ForeignKey(AirPort,on_delete=models.CASCADE ,related_name="departure")    
