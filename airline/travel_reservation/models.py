@@ -6,6 +6,7 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):    #yaane traveler bel class diagram
     class Meta:
         db_table = 'User'
+        
     receive_promotions = models.BooleanField(
         default=False
     )
@@ -13,10 +14,34 @@ class User(AbstractUser):    #yaane traveler bel class diagram
         null=True,blank=True
     )
 
+class Airline(models.Model):
+    class Meta:
+        db_table = 'Airline'
+    name = models.CharField(max_length=40)
+
+class Airplane(models.Model):
+    class Meta:
+        db_table = 'Airplane'
+    capacity = models.IntegerField(null=True)
+    airline = models.ForeignKey(Airline,on_delete=models.CASCADE)    
+
+
+class Country(models.Model):
+    class Meta:
+        db_table = 'Country'
+    name = models.CharField(max_length=50)
+
+    def __str__(self) -> str:
+        return f'{self.name}'
+
 class City(models.Model):
     class Meta:
         db_table = 'City'
-    name = models.CharField(max_length=40)   
+    name = models.CharField(max_length=40)
+    country = models.ForeignKey(Country,on_delete=models.CASCADE,null=True,blank=True)   
+
+    def __str__(self) -> str:
+        return f'{self.name}'
 
 class Hotel(models.Model): #bss naamoul extend la models.Model , django bi sir fio yaamoul interaction maa l database
     #ma hatayna id la2n django automatically bye5la2la id lal class
@@ -26,7 +51,6 @@ class Hotel(models.Model): #bss naamoul extend la models.Model , django bi sir f
     rating = models.DecimalField(decimal_places=1,max_digits=2)
     image = models.URLField()
     city = models.ForeignKey(City,on_delete=models.CASCADE)
-
 
 class Room(models.Model):
     ROOM_CATEGORIES = [
@@ -54,16 +78,15 @@ class Room(models.Model):
         return f'{self.number}. {self.category} for {self.capacity} people'
     
 
-class Airline(models.Model):
-    class Meta:
-        db_table = 'Airline'
-    name = models.CharField(max_length=40)
-
 class AirPort(models.Model):
     class Meta:
         db_table = 'AirPort'
     name = models.CharField(max_length=40)
+    city = models.ForeignKey(City,on_delete=models.CASCADE,null=True,blank=True)
 
+    def __str__(self) -> str:
+        return f'{self.name}'
+    
 class Flight(models.Model):
     class Meta:
         db_table = 'Flight'
@@ -75,11 +98,16 @@ class Flight(models.Model):
     airport_from = models.ForeignKey(AirPort,on_delete=models.CASCADE ,related_name="departure")    
     airport_to = models.ForeignKey(AirPort,on_delete=models.CASCADE ,related_name="arrival")
 
+    def __str__(self) -> str:
+        return f'{self.airport_from} to {self.airport_to} on {self.departure_time}'
 
-class Country(models.Model):
+class flightAvailableSeats(models.Model):
     class Meta:
-        db_table = 'Country'
-    name = models.CharField(max_length=50)
+        db_table = 'flight_available_seats'
+        unique_together = [('flight','airplane')]
+    available_seats = models.IntegerField(null=True)
+    flight = models.ForeignKey(Flight,on_delete=models.CASCADE)
+    airplane = models.ForeignKey(Airplane,on_delete=models.CASCADE)
 
 
 class Booking(models.Model):
@@ -97,6 +125,7 @@ class RoomBooked(models.Model):
     booking = models.ForeignKey(Booking,on_delete=models.CASCADE)
     checkin = models.DateTimeField()
     checkout = models.DateTimeField()
+    cancel_date = models.DateTimeField(null=True)
 
 class Payment(models.Model):
     class Meta:
@@ -107,7 +136,7 @@ class Payment(models.Model):
 
 
 
-
+#Cost la room
 
 
 
