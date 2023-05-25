@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm # Built in class form to create a user
 from .forms import CreateUserForm
 from django.contrib.auth.views import LoginView
-from .models import Flight
+from .models import Flight,flightAvailableSeats
 from .forms import AuthenticateUserForm,flightForm
 # table user built in
 
@@ -50,12 +50,33 @@ def search_results_view(request):
        airport_from = airport1,
        airport_to = airport2,
        departure_time__gte=departure_date,
-       arrival_time__lte = arrival_date 
+       arrival_time__gte = arrival_date 
     )
+    for flightN in flights:
+        available = flightAvailableSeats.objects.filter(flight = flightN).first()
+        flightN.airplane = available.airplane
+        print(flightN.airplane)
+
+    # info = []
+    # for flightn in flights:
+    #     info.append(flightAvailableSeats.objects.filter(flight= flightn))
+    # print(info[0].airplane)    
     context = {
         'flights' : flights
     }
     return render(request,'search_results.html',context)        
+
+def flight_Details(request):
+
+    flightID = request.GET.get('flightId')
+    flight = Flight.objects.get(id=flightID)
+    airplane = flightAvailableSeats.objects.get(flight = flight).airplane
+    
+    context = {
+        'flight' : flight,
+        'airplane' : airplane
+    }
+    return render(request,'flight_booking.html',context)
 
 def hotel_view(request):
 

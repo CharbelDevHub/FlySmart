@@ -31,19 +31,17 @@ this is flight page
                 <th scope="col">Fly To</th>
                 <th scope="col">Departure Date</th>
                 <th scope="col">Arrival Date</th>
+                <th score="col">Airplane</th>
             </tr>
         </thead>
         <tbody>
             {% for flight in flights %}
-            <tr class="clickable" onclick="trySomething()">
-                <td>
-                    {{ flight.airport_from }}
-
-                </td>
-
+            <tr class="clickable" onclick="trySomething('{{flight.id}}')">
+                <td>{{ flight.airport_from }}</td>
                 <td>{{ flight.airport_to }}</td>
                 <td>{{ flight.departure_time }}</td>
                 <td>{{ flight.arrival_time }}</td>
+                <td>{{ flight.airplane }}</td>
             </tr>
             {% empty %}
             <tr>
@@ -54,8 +52,10 @@ this is flight page
     </table>
 </div>
 <script>
-    function trySomething() {
-        window.location.href = '{% url "flight" %}';
+    function trySomething(flightId) {
+        var url = '{% url "flight_Booking" %}';
+        url += '?flightId=' + flightId;
+        window.location.href = url;
     }
 </script>
 {% endblock %}
