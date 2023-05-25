@@ -18,14 +18,30 @@ class Airline(models.Model):
     class Meta:
         db_table = 'Airline'
     name = models.CharField(max_length=40)
+    logo = models.URLField(null=True)
 
+    def __str__(self) -> str:
+        return f'{self.name}'
+
+class Airplane_type(models.Model):
+    class Meta:
+        db_table = 'Airplane_Type'
+    model = models.CharField(max_length=40,unique=True)
+    capacity = models.IntegerField(null=True)
+
+    def __str__(self) -> str:
+        return f'{self.model}'
+    
 class Airplane(models.Model):
     class Meta:
         db_table = 'Airplane'
-    capacity = models.IntegerField(null=True)
+    code = models.CharField(max_length=40,unique=True,blank=True)    
     airline = models.ForeignKey(Airline,on_delete=models.CASCADE)    
+    type = models.ForeignKey(Airplane_type,on_delete=models.CASCADE,null=True)
 
-
+    def __str__(self) -> str:
+        return f'{self.code}({self.airline})'
+    
 class Country(models.Model):
     class Meta:
         db_table = 'Country'
@@ -105,11 +121,19 @@ class flightAvailableSeats(models.Model):
     class Meta:
         db_table = 'flight_available_seats'
         unique_together = [('flight','airplane')]
-    available_seats = models.IntegerField(null=True)
+    available_seats = models.IntegerField(null=True,blank=True)
     flight = models.ForeignKey(Flight,on_delete=models.CASCADE)
     airplane = models.ForeignKey(Airplane,on_delete=models.CASCADE)
 
+    def save(self,*args,**kwargs):
+        if not self.available_seats:
+            self.available_seats = self.airplane.type.capacity if self.airplane.type else None
+        super().save(*args,**kwargs)    
 
+    def __str__(self) -> str:
+        return f'{self.flight.__str__()} in {self.airplane} with {self.available_seats} available'
+    
+    
 class Booking(models.Model):
     class Meta:
         db_table = 'Booking'
@@ -126,6 +150,7 @@ class RoomBooked(models.Model):
     checkin = models.DateTimeField()
     checkout = models.DateTimeField()
     cancel_date = models.DateTimeField(null=True)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
 
 class Payment(models.Model):
     class Meta:
