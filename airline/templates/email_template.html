@@ -1,0 +1,182 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.15.4/css/all.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans&display=swap');
+
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            height: 100vh;
+            background: linear-gradient(45deg, #eaeaea 33.333%, #c7ecee 33.33%);
+        }
+
+        .boarding-pass {
+            position: relative;
+            width: 320px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.08));
+        }
+
+        .boarding-pass .card {
+            display: flex;
+            background-color: #ffffff;
+            padding: 24px;
+        }
+
+        .boarding-pass .card.card-top {
+            text-align: center;
+            justify-content: space-between;
+            border-radius: 16px 16px 0 0;
+        }
+
+        .boarding-pass .card.card-top .code {
+            font-size: 32px;
+            font-weight: 900;
+        }
+
+        .boarding-pass .card.card-top .city {
+            font-size: 10px;
+            color: #48dbfb;
+        }
+
+        .flight-median {
+            position: relative;
+            height: 50px;
+            width: 100px;
+            top: 12px;
+            border-radius: 100% 100% 0 0 / 180% 180% 0 0;
+            border: 1px dashed transparent;
+            border-top-color: #c7ecee;
+        }
+
+        .flight-median i {
+            position: relative;
+            top: -11px;
+            color: #48dbfb;
+        }
+
+        .flight-median::before {
+            content: '';
+            position: absolute;
+            height: 6px;
+            width: 6px;
+            top: 14px;
+            left: 5px;
+            background-color: #48dbfb;
+            border-radius: 50%;
+            box-shadow: 80px 0 0 #48dbfb;
+        }
+
+        .boarding-pass .card.card-bottom {
+            flex-direction: column;
+            border-radius: 0 0 16px 16px;
+        }
+
+        .boarding-pass .card.card-bottom .card-row {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .boarding-pass .card.card-bottom .card-row:not(:last-child) {
+            margin-bottom: 12px;
+        }
+
+        .boarding-pass .card.card-bottom .label {
+            font-size: 10px;
+            color: #0abde3;
+        }
+
+        .boarding-pass .card.card-bottom .content {
+            font-size: 14px;
+            font-weight: 900;
+        }
+
+        .median {
+            height: 16px;
+            margin: 0 auto;
+            background-image: radial-gradient(circle, transparent 70%, #ffffff 70%),
+                repeating-linear-gradient(90deg, #ffffff 0, #ffffff 2%, #c7ecee 2%, #c7ecee 4%),
+                linear-gradient(#ffffff, #ffffff),
+                radial-gradient(circle, transparent 70%, #ffffff 70%);
+            background-size: 16px 16px, calc(100% - 16px) 1px, calc(100% - 16px) 100%, 16px 16px;
+            background-position: -8px 0, 8px 50%, 8px 0, calc(100% + 8px) 0;
+            background-repeat: no-repeat;
+        }
+    </style>
+</head>
+<body>
+    <div class="boarding-pass">
+        <div class="card card-top">
+            <div class="source">
+                <div class="code">{{name}}</div>
+                <div class="city">Madurai</div>
+            </div>
+            <div class="flight-median">
+                <i class="fas fa-plane"></i>
+            </div>
+            <div class="destination">
+                <div class="code">DXB</div>
+                <div class="city">Dubai</div>
+            </div>
+        </div>
+        <div class="median"></div>
+        <div class="card card-bottom">
+            <div class="card-row">
+                <div class="card-item">
+                    <span class="label">Passenger</span>
+                    <p class="content">nedunwedweq</p>
+                </div>
+                <div class="card-item">
+                    <span class="label">Date</span>
+                    <p class="content">13/04/2022</p>
+                </div>
+            </div>
+            <div class="card-row">
+                <div class="card-item">
+                    <span class="label">Flight No</span>
+                    <p class="content">SG212</p>
+                </div>
+                <div class="card-item">
+                    <span class="label">Gate</span>
+                    <p class="content">B2</p>
+                </div>
+                <div class="card-item">
+                    <span class="label">Seat</span>
+                    <p class="content">4D</p>
+                </div>
+                <div class="card-item">
+                    <span class="label">Class</span>
+                    <p class="content">Business</p>
+                </div>
+            </div>
+            <div class="card-row">
+                <div class="card-item">
+                    <span class="label">Boarding Time</span>
+                    <p class="content">11:00 IST</p>
+                </div>
+                <div class="card-item">
+                    <span class="label">Traveling Time</span>
+                    <p class="content">04:30</p>
+                </div>
+                <div class="card-item">
+                    <span class="label">Arrival Time</span>
+                    <p class="content">14:00 GST</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

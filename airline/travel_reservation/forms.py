@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
-from travel_reservation.models import User,Flight,AirPort
+from travel_reservation.models import User,Flight,AirPort,City
 
 
 class CreateUserForm(UserCreationForm):
@@ -83,14 +83,14 @@ class flightForm(forms.ModelForm):
     class Meta:
         model = Flight
         fields = ['airport_from','airport_to','departure_time','arrival_time']
-    num_passengers = forms.IntegerField()    
+    
 
-    airport_from = forms.ModelChoiceField(queryset=AirPort.objects.all() ,widget=forms.Select(attrs={
+    airport_from = forms.ModelChoiceField(queryset=City.objects.all() ,widget=forms.Select(attrs={
         'id' : 'airport1',
         'class' : 'form-select'
     }))
 
-    airport_to = forms.ModelChoiceField(queryset=AirPort.objects.all() ,widget=forms.Select(attrs={
+    airport_to = forms.ModelChoiceField(queryset=City.objects.all() ,widget=forms.Select(attrs={
         'id' : 'airport2',
         'class' : 'form-select'
     }))
@@ -102,14 +102,10 @@ class flightForm(forms.ModelForm):
     }
     ))
 
-    arrival_time = forms.DateField(widget=forms.DateInput(attrs={
-        'id' : 'arrival',
-        'type' : 'date',
-        'class' : 'form-control'
+    is_RoundTrip = forms.BooleanField(required=False,widget=forms.CheckboxInput(attrs={
+        'id' : 'roundtrip',
+        'class' : 'form-check-input '
     }))
 
-    num_passengers = forms.IntegerField(widget=forms.NumberInput(attrs={
-        'id' : 'passengers',
-        'type' : 'number',
-        'class' : 'form-control'
-    }))
+
+    

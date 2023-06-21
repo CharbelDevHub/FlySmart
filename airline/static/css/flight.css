@@ -1,0 +1,32 @@
+body {
+    background-image: linear-gradient( rgba(0,0,0,0.5),rgba(0,0,0,0.5) ),url("https://www.state.gov/wp-content/uploads/2020/11/shutterstock_186964970-scaled.jpg");
+    background-position: center;
+    background-size: cover;
+    margin-top: 8rem;
+}
+
+.booking-form-box{
+    max-width: 700px;
+    padding: 20px;
+    border: 1px solid #ced4da;
+    border-radius: 20px;
+    margin: 10% auto 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.form-control, .form-select{    
+    background-color: #dee2e6!important;
+    border-radius: 10px!important;
+    height: 50px!important;
+}
+
+
+
+label {
+    color: #dee2e6;
+}
+
+.custom-hover:hover {
+    background-color: #f8f9fa;
+    /* Add any other styling properties you want for the hover effect */
+}
