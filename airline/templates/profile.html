@@ -1,0 +1,25 @@
+{% extends 'base.html'%}
+{% load static%}    # metel include kermel est3mlo 
+
+{% block title%}
+my profile
+{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+<style>
+    body {
+        margin-top: 8rem;
+    }
+
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+<h3>
+    Heading
+    <small class="text-muted">with muted text</small>
+  </h3>
+{% endblock%}

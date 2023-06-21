@@ -255,6 +255,8 @@ def payment_process_view(request): #when we submit l payment
         context={'message':message}
         return render(request,'hotelRoomPayment.html',context)
 
+def profile_view(request):
+    return render(request,'profile.html')
 #Login View is built in
 
 class login_view(LoginView):
