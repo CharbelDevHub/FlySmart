@@ -1,0 +1,76 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block title %}
+Flight Booking
+{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+<style>
+    body {
+        margin-top: 8rem;
+    }
+
+    .clickable {
+        cursor: pointer;
+        pointer-events: auto;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+    <div class="card container bg-white mb-3 shadow ">
+      {% if f %}
+        <h4 class="card-header">Flight Details</h3>
+        <div class="card-body">
+          <h5 class="card-title">{{ f.airplane.airline.name }}</h5>
+          <h6 class="card-subtitle text-muted ">{{ f.flight.name }}</h6>
+        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" class="d-block user-select-none" width="100%" height="200" aria-label="Placeholder: Image cap" focusable="false" role="img" preserveAspectRatio="xMidYMid meet" viewBox="0 0 318 180" style="font-size:1.125rem;text-anchor:middle">
+            <image xlink:href="{{f.airplane.airline.logo}}" width="100%" height="100%" preserveAspectRatio="xMidYMid meet"></image>
+        </svg>
+        <div class="card-body">
+          <p class="card-text">{{f.flight}}</p>
+        </div>
+        <ul class="list-group bg-white">
+          <li class="list-group-item">City: {{f.flight.airport_from.city}} --> City: {{ f.flight.airport_to.city }}</li>
+          <li class="list-group-item">Price: {{ f.flight.price }}$</li>
+          <li class="list-group-item">Refundable:
+            {% if f.flight.is_Refundable %}
+            Yes
+            {% else %}
+            No
+            {% endif %}  
+            </li>
+          <li class="list-group-item">Available seats:
+            {{f.available_seats}}
+          </li>  
+        </ul>
+       
+        <div class="card-footer text-muted d-flex justify-content-between">
+          <p class="text-muted">
+            Departure Time: {{f.flight.departure_time}}
+            <br>
+            Arrival Time: {{f.flight.arrival_time}}
+          </p>
+          <button class="btn btn-dark " onclick="payment('{{f.flight.id}}')">
+            Book Now
+          </button>
+        </div>
+        {% else %}
+        <div class="">
+            {{ error }}
+        </div>
+        {% endif %}
+      </div>
+<script>
+  function payment(flightId){
+        var url = '{% url "flight_payment" %}';
+        url += '?flightId=' + flightId;
+        window.location.href = url;
+  }
+</script>     
+
+{% endblock %}

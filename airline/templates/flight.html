@@ -1,11 +1,108 @@
-{% extends 'base.html'%}
+{% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
-this is flight page
+This is the flight page
 {% endblock %}
 
+{% block style %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/flight.css' %}">
+
+<style>
+    
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="container my-5"><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque atque voluptas quo aperiam non consectetur iste,
-    sequi fugiat veniam! Mollitia, ullam. Recusandae vero quaerat aut nisi in atque omnis amet.</p></div>
+<div class="booking-form-box">
+    <div class="container">
+        <h3 class="text-center">
+            Search
+            <small class="text-muted">your flight!</small>
+        </h3>
+        <form action="{% url 'search_results' %}" method="get">
+            {% if form %}
+            <div class="form-group">
+                <label class="form-label mt-4" for="airport1">Flying from</label>
+                {{ form.airport_from }}
+            </div>
+    
+            <div class="form-group">
+                <label class="form-label mt-4" for="airport2">Flying to</label>
+                {{ form.airport_to }}
+            </div>
+    
+            <div class="form-group">
+                <label class="form-label mt-4" for="departure">Departure</label>
+                {{ form.departure_time }}
+            </div>
+        
+            <fieldset class="form-group mt-3">
+                <div class="form-check">
+                    {{ form.is_RoundTrip }}
+                    <label class="form-check-label" for="flexCheckDefault">
+                        Round Trip
+                    </label>
+                </div>
+            </fieldset>
+
+            <div class="form-group" id="arrival-grp">
+                <label class="form-label mt-4" for="arrival">Flight returning date</label>
+                <input type="date" class="form-control" name="Departure_time_2">
+            </div>
+    
+            <div class="d-flex justify-content-end mt-4">
+                <input type="submit" class="btn btn-outline-light" value="Search" />
+            </div>    
+            {% endif %}
+        </form>
+    </div>
+</div>
+
+
+<script>
+    // Wrap the code inside a DOMContentLoaded event listener
+    document.addEventListener('DOMContentLoaded', function () {
+        // Retrieve the checkbox element
+        var roundTripCheckbox = document.getElementById('roundtrip');
+        var departureTime2 = document.querySelector('input[name="Departure_time_2"]')
+        // Retrieve the arrival input group element
+        var arrivalInputGroup = document.getElementById('arrival-grp');
+
+        // Add an event listener to the checkbox
+        roundTripCheckbox.addEventListener('change', function () {
+            // Check if the checkbox is checked
+            if (roundTripCheckbox.checked) {
+                // Show the arrival input group
+                arrivalInputGroup.style.display = 'block';
+            } else {
+                // Hide the arrival input group
+                departureTime2.value = '';
+                arrivalInputGroup.style.display = 'none';
+            }
+        });
+
+        // Check the initial state of the checkbox
+        if (roundTripCheckbox.checked) {
+            // Show the arrival input group
+            arrivalInputGroup.style.display = 'block';
+        } else {
+            // Hide the arrival input group
+            departureTime2.value = '';
+            arrivalInputGroup.style.display = 'none';
+        }
+    });
+
+    // In your Javascript (external .js resource or <script> tag)
+$(document).ready(function() {
+    $('#airport1').select2({
+        theme: 'classic'
+    });
+});
+$(document).ready(function() {
+    $('#airport2').select2({
+        theme: 'classic'
+    });
+});
+</script>
 {% endblock %}
