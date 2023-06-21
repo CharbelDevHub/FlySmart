@@ -10,8 +10,13 @@ urlpatterns = [
     path('search/',search_results_view,name='search_results'),
     path('FlightDetails/',flight_Details,name='flight_Booking'),
     path('Flight/payment',payment_flight,name='flight_payment'),
-     path('Rooms/',rooms_detail_view, name='rooms_detail_view'),
+    path('Rooms/',rooms_detail_view, name='rooms_detail_view'),
     path('RoomBooking/<int:hotel_id>/',checkRoom_availability_view, name='room_availability'),
     path('RoomPayment/',hotel_Room_payment_view,name='hotelRoomPay'), #l name yali aam hoto hue l l url yali bel ahref hattino lal button
-    path('PaymentSuccessfull/',payment_process_view,name='paymentProcess')
+    path('PaymentSuccessfull/',payment_process_view,name='paymentProcess'),
+    path('Profile/',profile_view,name="profile"),
+    path('cancel/<int:flight_id> /', cancel_flight_view, name='cancelF'),  #cancelF for cancel Flight  (this name will be used in the form in the html )
+    path('cancel/room/<int:roombooked_id>/',cancel_room_view,name="cancelR"), #cancelR for cancel room (this name will be used in the form in profile.html)
+    path('rooms/<int:hotel_id>/',room_list_view, name='room_list')
+    
 ]

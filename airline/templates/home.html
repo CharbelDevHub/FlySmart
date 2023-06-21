@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 
 <!DOCTYPE html>
@@ -6,10 +7,146 @@
 {% block title %}
 this is our home page
 {% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+<link rel="stylesheet" href="{% static 'css/stylealert.css' %}">
+<link rel="stylesheet" href="{% static 'css/homepagestyling.css' %}">
+<style>
+ .background-section {
+  background-image: url("{% static 'images/firecamp.png' %}");
+      background-size: cover;
+      background-position: top;
+      padding-top: 8rem;
+      padding-bottom: 4rem;
+      
+    }
+
+    .cities-section {
+      background-color: #fffff0;
+      padding: 20px;
+    }
 
 
+
+
+  
+  
+</style>
+{% endblock %}
 <body>
+  
+    {% block content %}
+    <div class="background-section">
+     <div class="container1">
+      <div class="text-center">
+    <h1>Find your next stay </h1>
+  </div> 
+</div> 
+    
+    
    
+    
+    
+      
+      
+    
+<main>
+  
+  <div class="container mt-5">
+    <h1>Welcome to our Hotel Reservation System</h1>
+    <p>Choose a hotel and select a room for reservation:</p>
+
+    <div class="row">
+      {% for hotel in hotels %}
+      <div class="col-md-3">
+        <div class="card mb-3">
+          <h3 class="card-header">{{ hotel.name }}</h3>
+          <div class="card-body">
+            <h5 class="card-title">{{ hotel.rating }} stars</h5>
+            <h6 class="card-subtitle text-muted">Located at {{ hotel.city }}</h6>
+          </div>
+          <div class="card-body">
+            <svg xmlns="http://www.w3.org/2000/svg" class="d-block user-select-none" width="100%" height="200" aria-label="Placeholder: Image cap" focusable="false" role="img" preserveAspectRatio="xMidYMid slice" viewBox="0 0 318 180" style="font-size:1.125rem;text-anchor:middle">
+              <image xlink:href="{{ hotel.image }}" width="100%" height="100%" preserveAspectRatio="xMidYMid slice"></image>
+            </svg>
+          </div>
+          <div class="card-body">
+            <p class="card-text"></p>
+          </div>
+          <div class="card-body">
+            <a href="{% url 'room_list' hotel_id=hotel.id %}" class="card-link">View Rooms</a>
+          </div>
+        </div>
+      </div>
+
+      {% if forloop.counter|divisibleby:4 and not forloop.last %}
+      </div>
+      <div class="row">
+      {% endif %}
+
+      {% endfor %}
+    </div>
+  </div>
+</div>
+</main>
+<div class="cities-section">
+  <div class="container">
+    <div class="row">
+      {% for city in cities %}
+        <div class="col-md-3">
+          <div class="card border-primary mb-3" style="max-width: 20rem;">
+            <div class="card-header">{{city.name}}</div>
+            <div class="card-body">
+              <h4 class="card-title">{{city.name}}</h4>
+              <p class="card-text"><img src="{{city.image}}" alt=""></p>
+            </div>
+          </div>
+        </div>
+  
+        {% if forloop.counter|divisibleby:4 and not forloop.last %}
+          </div>
+          <div class="row">
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+
+<h6 class="card-subtitle mb-2 text-muted p-4"> Welcome to our website, your one-stop destination for booking flights and hotel rooms. We are committed to providing you with a seamless travel experience, whether you're planning a business trip, family vacation, or a romantic getaway.
+
+  At our website, we understand the importance of finding the perfect flight and accommodation that suits your needs and preferences. With our user-friendly interface and comprehensive search options, you can easily compare prices, select the best deals, and make secure bookings with confidence.
+  
+  Our dedicated team works tirelessly to curate a wide range of flight options from leading airlines, ensuring you have access to the best routes and schedules. Whether you're looking for economy class affordability or luxurious first-class comfort, we have you covered.
+  
+  In addition to flights, we offer an extensive selection of hotels to cater to every traveler's taste and budget. From cozy boutique hotels to world-renowned luxury resorts, you can browse through various accommodations and find the perfect place to stay during your trip.
+  
+  We prioritize your convenience and safety, which is why we partner with reputable airlines and hotels to ensure your travel experience is reliable and enjoyable. Our secure payment system guarantees the protection of your personal information, allowing you to book with peace of mind.
+  
+  With our commitment to exceptional customer service, we are here to assist you at every step of your journey. Our knowledgeable support team is available round the clock to answer your queries, provide travel advice, and assist with any booking-related assistance you may require.
+  
+  Thank you for choosing our website as your trusted travel companion. We look forward to helping you create unforgettable travel experiences and memories that will last a lifetime.
+  
+  
+  
+  
+    </h6>
+
+
+    
+      <footer class="mt-5 bg-dark text-white text-center py-3">
+        <p>&copy; 2023 FlySmart . All rights reserved.</p>
+      </footer>
+    
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    
+    
+    
+
+
+    {% endblock%}
     
     <h1 class="mt-5 p-5">Welcome to Airlines</h1>
    

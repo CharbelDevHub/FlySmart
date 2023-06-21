@@ -3,3 +3,4 @@
 /airline/Airlines/settings.py
 /airline/Pipfile
 /airline/Pipfile.lock
+airline/travel_reservation/models.py

@@ -50,10 +50,10 @@
                 {% if request.user.is_authenticated %}
                 <ul class="navbar-nav ms-lg-5 mt-2 mt-lg-0">
                     <li class="nav-item me-2">
-                        <a class="btn btn-outline-light" href="/Signup/">Sign up</a>
+                        <a class="btn btn-dark " href="Signup/">Sign up</a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-secondary disabled" href="Login/">Logged in as {{ request.user }}</a>
+                        <a class=" btn btn-secondary {% if nav == 'profile' %} active {% endif %}" href="/Profile/">{{ request.user }}</a>
                     </li>
                 </ul>
                 {% else %}
