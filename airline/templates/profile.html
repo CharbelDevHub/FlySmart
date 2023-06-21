@@ -1,5 +1,5 @@
 {% extends 'base.html'%}
-{% load static%}    # metel include kermel est3mlo 
+{% load static%} # metel include kermel est3mlo
 
 {% block title%}
 my profile
@@ -7,19 +7,280 @@ my profile
 
 {% block style %}
 <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+<link rel="stylesheet" href="{% static 'css/stylealert.css' %}">
 <style>
-    body {
-        margin-top: 8rem;
-    }
+  body {
+    margin-top: 8rem;
+    background-image: url("{% static 'images/background3.png' %}");
+    background-size: cover;
+    background-position: center;
+    border-radius: 10%;
+  }
 
+
+
+
+  
+  
 </style>
 {% endblock %}
 
 
 {% block content %}
 
-<h3>
-    Heading
-    <small class="text-muted">with muted text</small>
+<div class="mx-3">
+  <h3>
+    Check Your Registered
+    <br>
+    <small class="text mt-3">Flights</small>
   </h3>
+</div>
+
+
+
+{% for eachbooking in resultsBooking %}
+  {% if eachbooking.cancel_date is none %}
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12 p-3">
+      <!-- Content for the first column -->
+      <div class="card ">
+        <div class="card-body">
+          <h4 class="card-title">{{ eachbooking.flight.name}}</h4>
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-6">
+                <!-- Content for the first column -->
+                <h6 class="card-subtitle mb-2 text-muted">From: {{eachbooking.flight.airport_from}}</h6>
+              </div>
+              <div class="col-sm-6">
+                <!-- Content for the second column -->
+                <h6 class="card-subtitle mb-2 text-muted">To:{{eachbooking.flight.airport_to}}</h6>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-6">
+                <!-- Content for the first column -->
+                <h6 class="card-subtitle mb-2 text-muted">Departure time:{{eachbooking.flight.departure_time}}  </h6>
+              </div>
+              <div class="col-sm-6">
+                <!-- Content for the second column -->
+                <h6 class="card-subtitle mb-2 text-muted"> Arrival Time: {{eachbooking.flight.arrival_time}}  </h6>
+              </div>
+
+
+
+              <p class="card-text">Price:{{eachbooking.flight.price}}</p>
+              <div class="container">
+                <div class="row">
+                  <div class="col-sm-6">
+                    {% if eachbooking.status == 'Upcoming'  %}
+                    
+                     
+                    <button type="button"id="cancelButton" class="btn btn-sm btn-outline-danger" onclick="openpopup()">Cancel</button>
+
+                    
+                    <!-- Define a hidden div to display the popup message -->
+                      <!-- <div class="popupmessage" id="popupmessage1">
+                        <h4>Are you sure you want to cancel ?</h4>
+                        <h6 class="card-subtitle mb-2 text-muted"> You Still Have The Chance To Change Your Mind , Don't Mess It Up</h6>
+                        
+                        <form action="{% url 'cancelF' flight_id=eachbooking.flight.id %}" method="post">
+                          {% csrf_token %}
+                          <button type="submit">Cancel Flight</button>
+                        </form>
+                        <button type="button" class="btn btn-sm btn-info " onclick="closepopup()">Back</button>
+                      </div> -->
+                      <div class="modal " id="popupmessage">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title">Are you sure you want to cancel?</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true"></span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <p>if you press "im sure to cancel " the flight will be canceled and cannot be registered again.</p>
+                            </div>
+                            <div class="modal-footer">
+                              <form action="{% url 'cancelF' flight_id=eachbooking.flight.id   %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary">Yes Im Sure</button>
+                              </form>
+                              
+                              <button type="button" onclick="closepopup()" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {% if eachbooking.flight.is_Refundable == True %}
+                      <p class="card-text">PS : This flight is Refundable </p> 
+                      {% else %}
+                      <p class="card-text">PS : This flight is Not Refundable </p>
+                      {% endif  %}
+
+                    {% else %} <p class="card-text">You cannot Cancel or Refund this flight anymore </p> 
+
+                    {% endif %}
+                   
+                    
+                  </div>
+                  <div class="col-sm-6">
+                    {{eachbooking.status}}
+                    <!-- Content for the second column -->
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endif %}
+{% endfor %}
+
+</div>
+</div>
+
+
+
+<div class="  mx-3 mt-5">
+  <h3>
+    Check Your Registered
+    <br>
+    <small class="text mt-3">Rooms</small>
+  </h3>
+</div>
+
+
+{% for eachroombooked in roomBooked %}
+{% if eachroombooked.cancel_date is none %}
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12 p-3">
+      <!-- Content for the first column -->
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">{{ eachroombooked.room.hotel.name}}</h4>
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-6">
+                <!-- Content for the first column -->
+                <h6 class="card-subtitle mb-2 text-muted">Room Number: {{eachroombooked.room.number}}</h6>
+              </div>
+              <div class="col-sm-6">
+                <!-- Content for the second column -->
+                <h6 class="card-subtitle mb-2 text-muted">Room capacity:{{eachroombooked.room.capacity}}</h6>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-6">
+                <!-- Content for the first column -->
+                <h6 class="card-subtitle mb-2 text-muted">CheckIn: {{eachroombooked.checkin}}</h6>
+              </div>
+              <div class="col-sm-6">
+                <!-- Content for the second column -->
+                <h6 class="card-subtitle mb-2 text-muted"> CheckOut: {{eachroombooked.checkout}}</h6>
+              </div>
+
+
+
+              <p class="card-text">Price:{{eachroombooked.room.price}}</p>
+              <div class="container">
+                <div class="row">
+                  <div class="col-sm-6">
+                    {% if eachroombooked.status == 'Upcoming' or eachroombooked.status == 'Ongoing' %}
+                    <button type="button"id="cancelButton" class="btn btn-sm btn-outline-danger" onclick="openpopup()">Cancel</button>
+                    <!-- Define a hidden div to display the popup message -->
+                      <!-- <div class="popupmessage p-5" id="popupmessage2">
+                        <h4>Are you sure you want to cancel ?</h4>
+                        <h6 class="card-subtitle mb-2 text-muted"> You Still Have The Chance To Change Your Mind , Don't Mess It Up</h6>
+                        
+                        <form action="{% url 'cancelR' roombooked_id=eachroombooked.id %}" method="post">
+                          {% csrf_token %}
+                          <button type="submit">Cancel Room</button>
+                        </form>
+                        <button type="button" class="btn btn-sm btn-info " onclick="closepopup()">Back</button>
+                      </div> -->
+                      <div class="modal " id="popupmessage">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title">Are you sure you want to cancel this room?</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true"></span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <p>if you press "im sure to cancel " the room will be canceled and cannot be registered again.</p>
+                            </div>
+                            <div class="modal-footer">
+                              <form action="{% url 'cancelR' roombooked_id=eachroombooked.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary">Yes Im Sure</button>
+                              </form>
+                              
+                              <button type="button" onclick="closepopup()" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {% if eachroombooked.room.is_refundable == True %}
+                      <p class="card-text">PS : This Room Is Refundable </p>
+                      {% else %}
+                      <p class="card-text">This Room  Is Not Refundable </p>
+                      {% endif %}
+                    {% else  %} <p class="card-text">you cannot Cancel Or Refund this room anymore </p> 
+                    {% endif %}
+                   
+                    <!-- Content for the first column -->
+                  </div>
+                  <div class="col-sm-6">
+                    {{eachroombooked.status}}
+                    <!-- Content for the second column -->
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endfor %}
+
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!-- Add JavaScript code -->
+<script>
+ // Hide the popup after canceling the reservation
+  let popupmessage =document.getElementById("popupmessage")
+
+
+  function openpopup(){
+    popupmessage.classList.add("d-block");
+
+  }
+  function closepopup(){
+    popupmessage.classList.remove("d-block");
+    
+  }
+</script>
+
 {% endblock%}

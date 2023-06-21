@@ -152,10 +152,10 @@ class flightAvailableSeats(models.Model):
     flight = models.ForeignKey(Flight,on_delete=models.CASCADE)
     airplane = models.ForeignKey(Airplane,on_delete=models.CASCADE)
 
-    def save(self,*args,**kwargs):
+    def save(self,args,*kwargs):
         if not self.available_seats:
             self.available_seats = self.airplane.type.capacity if self.airplane.type else None
-        super().save(*args,**kwargs)    
+        super().save(args,*kwargs)    
 
     def __str__(self) -> str:
         return f'{self.flight.__str__()} in {self.airplane} with {self.available_seats} available'
@@ -165,10 +165,17 @@ class flightAvailableSeats(models.Model):
             self.available_seats -= 1
             self.save()
     
+    def decrement_available_seats(self):
+        if self.available_seats is not None:
+            self.available_seats -= 1
+            self.save()
+
+
+
 class Booking(models.Model):
     class Meta:
         db_table = 'Booking'
-    date = models.DateField()
+    date = models.DateField() 
     cost = models.DecimalField(decimal_places=2,max_digits=6)  #lezim zabeta hay champ calcule
     cancel_date = models.DateField(null=True)
     payment_date = models.DateField()

@@ -3,6 +3,7 @@ from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm # Built in class form to create a user
 from .forms import CreateUserForm
+from .models import Flight,Booking,RoomBooked,Room,flightAvailableSeats,Hotel,City
 from django.contrib.auth.views import LoginView
 from .models import Flight,flightAvailableSeats,Booking,Hotel,Room,RoomBooked
 from .forms import AuthenticateUserForm,flightForm
@@ -14,11 +15,22 @@ from django.template.loader import render_to_string
 import pdfkit
 from decimal import Decimal
 
+from .forms import AuthenticateUserForm
+from datetime import datetime
+import time 
+from django.utils import timezone
 # table user built in
 
 # Create your views here.
 def home_view(request):
-    return render(request,'home.html',{'nav':"home"})
+    hotels=Hotel.objects.all()
+    cities=City.objects.all()
+    return render(request,'home.html',{'nav':"home",'hotels':hotels,'cities':cities})\
+    
+def room_list_view(request, hotel_id):
+    hotel = Hotel.objects.get(pk=hotel_id)
+    rooms = Room.objects.filter(hotel=hotel)
+    return render(request, 'room_list.html', {'hotel': hotel, 'rooms': rooms})    
 
 def signup_view(request):
     
@@ -255,10 +267,109 @@ def payment_process_view(request): #when we submit l payment
         context={'message':message}
         return render(request,'hotelRoomPayment.html',context)
 
-def profile_view(request):
-    return render(request,'profile.html')
-#Login View is built in
+def profile_view(request): 
+  resultsBooking=Booking.objects.filter(user=request.user)
 
+ 
+  
+
+
+  print(resultsBooking)
+  numberOfFlightBookings=len(resultsBooking)
+
+
+  resultsRoomBooked=RoomBooked.objects.filter(user=request.user)
+  #booking__user (hayde kent hattayta bl filter bas rj3na zabatna) bas ma st3mlnha laeno rj3na zabatna bas tarakta kermel l rmq
+  # b aleb l model roomBooked eena fk esmo booking , w ta ousal lal field user tb3 l class booking
+  #  be3mol hal tari2a
+
+
+  
+  current_date = datetime.now().date()
+  formatted_date = current_date.strftime('%Y-%m-%d')
+  #%B represents the full month name (e.g., "MAY").
+#%d represents the day of the month as a zero-padded decimal number (e.g., "25").
+#%Y represents the year with a century as a decimal number (e.g., "2023").
+#%I represents the hour (12-hour clock) as a zero-padded decimal number (e.g., "07").
+#%M represents the minute as a zero-padded decimal number (e.g., "10").
+#%p represents either "AM" or "PM" based on the given time (e.g., "P.M.").
+
+  
+
+  
+
+
+
+  
+  return render(request,'profile.html',{'nav':"profile",'resultsBooking':resultsBooking,'numberOfBookings':numberOfFlightBookings,'roomBooked':resultsRoomBooked,'current_time':formatted_date})
+
+
+
+
+def cancel_room_view(request,roombooked_id=0):
+
+
+    resultsBooking=Booking.objects.filter(user=request.user)
+    numberOfFlightBookings=len(resultsBooking)
+
+
+    resultsRoomBooked=RoomBooked.objects.filter(user=request.user)
+
+   
+    current_date = datetime.now().date()
+    formatted_date = current_date.strftime('%Y-%m-%d')
+   
+    if roombooked_id !=0:
+     roombooked=RoomBooked.objects.get(id=roombooked_id)
+     roombooked.cancel_date=formatted_date
+     roombooked.is_refunded=True
+     roombooked.save()
+
+    return render(request,'profile.html',{'nav':"profile",'resultsBooking':resultsBooking,'numberOfBookings':numberOfFlightBookings,'roomBooked':resultsRoomBooked,'current_time':formatted_date})
+
+
+
+def cancel_flight_view(request,flight_id):
+   # 3tine defalut value lal flight_id kermel awal mara mn 3ayit he l view ma b koun fi flight_id 
+   # hayde l flight_id rah n2ate3a bl click aal btn cancel bl profile.html
+    #se3eta khls bl profile.html kermel e3mol control aal dates (dep w arrival bas be3mol booking.status)
+
+   resultsBooking=Booking.objects.filter(user=request.user)
+   numberOfFlightBookings=len(resultsBooking)
+
+   resultsRoomBooked=RoomBooked.objects.filter(user=request.user)
+
+   current_date = datetime.now().date()
+   formatted_date = current_date.strftime('%Y-%m-%d')
+  #%B represents the full month name (e.g., "MAY").
+#%d represents the day of the month as a zero-padded decimal number (e.g., "25").
+#%Y represents the year with a century as a decimal number (e.g., "2023").
+#%I represents the hour (12-hour clock) as a zero-padded decimal number (e.g., "07").
+#%M represents the minute as a zero-padded decimal number (e.g., "10").
+#%p represents either "AM" or "PM" based on the given time (e.g., "P.M.").
+
+   if flight_id !=0:  # to cancel a flight (modify the cancel date in the database )
+    flight = Flight.objects.get(id=flight_id)
+    temp=Booking.objects.get(flight=flight)
+    temp.cancel_date=formatted_date
+    if temp.flight.is_Refundable == True:
+        temp.is_refunded=True
+       
+   # ide aal rab saad batal 
+    temp2=flightAvailableSeats.objects.get(flight=flight)
+    print(temp2.available_seats)
+    temp2.available_seats=temp2.available_seats+1
+    print(temp2.available_seats)
+
+
+    
+    temp.save()
+
+    print(flight)
+
+   return render(request,'profile.html',{'nav':"profile",'resultsBooking':resultsBooking,'numberOfBookings':numberOfFlightBookings,'roomBooked':resultsRoomBooked,'current_time':formatted_date})
+   
+#Login View is built in
 class login_view(LoginView):
    
    form_class = AuthenticateUserForm
