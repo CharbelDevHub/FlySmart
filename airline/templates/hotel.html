@@ -5,6 +5,7 @@ hotel registration page
 {% endblock %}
 {% block style %}
 <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+
 <style>
     .myimg{
   margin-top:115px;
@@ -17,9 +18,9 @@ hotel registration page
   width: 1000px;
   padding-left: 10px;
   padding-top: 20px;
-  height: 140px;
+  height: 170px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.35);
-  display: flex;
+  display: flex ;
   flex-direction: column;
   align-items: center;
 }
@@ -27,22 +28,58 @@ hotel registration page
  font-size: larger;
 font-weight: bold;
 }
+.mymargin{
+  margin-left: 35px;
+}
+.tablem{
+  margin-top: 90px;
+}
+.whitetext{
+  color: rgb(73, 75, 85);
+}
 </style>
 {% endblock %}
 {% block content %}
 
 <div class="container-fluid d-flex justify-content-center myimg position-relative  "  >
-   <img class="rounded-1" width="80%" height="500px"   src=" {% static 'images/hotel.png' %} "/>
+   <img class="rounded-1" width="80%" height="400px"   src=" {% static 'images/hotel.png' %} "/>
 </div>
 <div class="position-absolute  start-50 translate-middle-x  box1 rounded-2 ">
 <p class="text1"> Discover and find your best experience hotels !</p>
-  <form action="" method="get">
-     <input type="text"  style="width: 800px" placeholder=" You can search  for hotels by name , country or city"/> <input type="submit" value="Search here"/>
+  <form action="" method="get" class="d-flex">
+     <input type="text" class="form-control mb-3 " name="query" style="width: 700px "
+      placeholder=" You can search  for hotels by name , country or city"/> 
+     <input type="submit"  value="Search here" class="btn btn-dark mymargin mb-3"/>
   </form>
-
+  {% if message %}<p>{{ message }}</p>{% endif %}
+  {% if hotels %}<p>Check for results down below</p>{% endif%}
 </div>
 
-
-
+  {% if hotels %}
+ 
+<table class="table table-hover tablem">
+  <tbody>
+    {% for hotel in hotels %}
+    <tr class="table-transparent">
+      <td width="200">
+        <img width="400px" src="{{ hotel.image}}"/>
+      </td>
+      <td>
+        <h1 class="whitetext">{{ hotel.name }}</h1><br>
+        {{hotel.description}}<br><br>
+        <strong>Location: </strong>{{ hotel.city.name }}-{{ hotel.city.country.name }}<br><br>
+        {{ hotel.rating }}⭐
+        <div style="text-align: right; margin: bottom 5px;">
+          <a href="{% url 'room_availability' hotel_id=hotel.id %}">
+            <button type="button" class="btn btn-light">Book a room</button>
+          </a>
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+  
+</table></div>
+{% endif %}
 
 {% endblock %}
