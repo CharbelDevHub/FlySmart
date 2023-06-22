@@ -107,8 +107,7 @@ def flight_Details(request):
 
 def payment_flight(request):
     flightID = request.GET.get('flightId')
-    f = Flight.objects.get(id=flightID)
-
+    f = flightAvailableSeats.objects.get(id=flightID)
     if request.method == 'POST':
         template = render_to_string('email_template.html', {'name': "Charbel"})
         pdf_options = {
@@ -122,15 +121,15 @@ def payment_flight(request):
         path_to_wkhtmltopdf = 'C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe'
         pdf = pdfkit.from_string(template, False,  configuration=pdfkit.configuration(wkhtmltopdf=path_to_wkhtmltopdf),options=pdf_options)
 
-        Booking.objects.create(date=timezone.now().date(), cost=f.price, flight=f, user=request.user, payment_date=timezone.now().date())
-        flightAvSeats = flightAvailableSeats.objects.get(flight=f)
-        flightAvSeats.decrement_available_seats()
+        Booking.objects.create(date=timezone.now().date(), cost=f.flight.price, flight=f.flight, user=request.user, payment_date=timezone.now().date())
+        # flightAvSeats = flightAvailableSeats.objects.get(id=f)
+        f.decrement_available_seats()
 
         email = EmailMessage(
             'Thanks for booking a flight',
             template,
             settings.EMAIL_HOST_USER,
-            ['vanessakhourieh@gmail.com']
+            ['jyoussef532@gmail.com']
         )
         email.content_subtype = "html"
         email.fail_silently = False
@@ -138,7 +137,7 @@ def payment_flight(request):
         email.send()
         return HttpResponseRedirect("/", status=303)
 
-    response = render(request, 'payment.html', {'price': f.price})
+    response = render(request, 'payment.html', {'price': f.flight.price})
     response['Cache-Control'] = 'no-cache, no-store, must-revalidate'
     response['Pragma'] = 'no-cache'
     response['Expires'] = '0'

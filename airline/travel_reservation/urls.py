@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import home_view,signup_view,login_view,flight_view,hotel_view,search_results_view,flight_Details,payment_flight,rooms_detail_view,hotel_Room_payment_view,payment_process_view,checkRoom_availability_view
+from .views import home_view,signup_view,login_view,profile_view,cancel_flight_view,room_list_view,cancel_room_view,flight_view,hotel_view,search_results_view,flight_Details,payment_flight,rooms_detail_view,hotel_Room_payment_view,payment_process_view,checkRoom_availability_view
 
 urlpatterns = [
     path('',home_view),
